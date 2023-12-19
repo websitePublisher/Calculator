@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<style>
+
+
+
+    body{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Arimo', sans-serif;
+        /* font-family: 'Lexend Deca', sans-serif; */
+        background: #444;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    h2{
+        color: white;
+        font-size:4em;
+        font-weight: 900;
+        filter: drop-shadow(0 -5px 2px black);
+        -webkit-text-stroke: 2px #b9e2e9;
+    }
+    #calculator{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 20px 20px;
+        border: 3px solid rgb(54, 52, 52);
+        border-radius: 10px;
+        box-shadow: inset 0 0 10px rgb(49, 46, 46);
+        margin-top: -2em;
+    }
+    input{
+       position: relative;
+       height: auto;
+       min-height: 1.8em;
+       max-width: 9.5em;
+       width: auto;
+       text-align: right;
+       padding: 10px 10px;
+       font-size: 2em;
+       color: #ffffff;
+       background: #545252;
+       border-radius: 10px;
+       border: none;
+       box-shadow: 0 -10px 10px #222121,
+       inset 0 0 3px rgb(52, 50, 50);
+       margin-bottom: 0.5em;
+    }
+    input::placeholder{
+        color: white;
+    }
+    #row{
+        margin-top: 0.5em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.3em;
+        flex-direction: row;
+    }
+    button{
+        border-radius: 5px;
+        border: none;
+        padding: 10px 20px;
+        height: 3em;
+        width: 4em;
+        font-size: 1.2em;
+        background-color: #1c1c1c77;
+        color: white;
+        font-weight: 900;
+        filter: drop-shadow(0 -5px 2px #7e7a7ac9);
+        box-shadow: inset 0 0 5px rgb(59, 57, 57);
+        transition: all 0.2s;
+    }
+    /* button:nth-child(1):hover,button:nth-child(2):hover{
+        border: 1px solid #00a6ff;
+    }
+    button:nth-child(3):hover,button:nth-child(4):hover,button:nth-child(8):hover,button:nth-child(12):hover,button:nth-child(16):hover,button:nth-child(19):hover{
+        border: 1px solid #00ff2f;
+    }
+    button:nth-child(20):hover{
+        border: 1px solid white;
+    } */
+    button:hover{
+        border: 1px solid white;
+        cursor: pointer;
+    }
+    button:active{
+        filter: drop-shadow(0 5px 2px #7e7a7ac9);
+        box-shadow: inset 0 0 5px rgb(59, 57, 57);
+        padding: 20px 20px;
+        font-size: 1.2em;
+        border: none;
+        transition: none;
+        cursor: pointer;
+    }
+
+</style>
+
+<body>
+
+    <h2>Calculator</h2>
+
+    <div id="calculator">
+        
+        <input type="text" placeholder="0" id="inputBox" readonly>
+
+        <div id="row">
+            <button id="button" style="color: #00a6ff;">AC</button>
+            <button id="button" style="color: #00a6ff;" data-value="DEL">DEL</button>
+            <button id="button" style="color: #00ff2f;">%</button>
+            <button id="button" style="color: #00ff2f;">/</button>
+        </div>
+        <div id="row">
+            <button id="button">7</button>
+            <button id="button">8</button>
+            <button id="button">9</button>
+            <button id="button" style="color: #00ff2f;">*</button>
+        </div>
+        <div id="row">
+            <button id="button">4</button>
+            <button id="button">5</button>
+            <button id="button">6</button>
+            <button id="button" style="color: #00ff2f;">-</button>
+        </div>
+        <div id="row">
+            <button id="button">1</button>
+            <button id="button">2</button>
+            <button id="button">3</button>
+            <button id="button" style="color: #00ff2f;">+</button>
+        </div>
+        <div id="row">
+            <button id="button">0</button>
+            <button id="button">00</button>
+            <button id="button" style="color: #00ff2f;">.</button>
+            <button id="button" style="color: #ffffff; background: rgba(252, 158, 27, 0.736);">=</button>
+        </div>
+    </div>
+    
+
+    <script>
+
+
+
+        let input = document.getElementById('inputBox');
+        let buttons = document.querySelectorAll('button');
+        
+        let string = "";
+        let arr = Array.from(buttons);
+        let specialChracters = ["/", "*", "-", "+", "%", "="];
+        const tune = new Audio('../Image/mixkit-arcade-game-jump-coin-216.wav')
+
+
+        arr.forEach(button => {
+            button.addEventListener('click', (e) => {
+                if(e.target.innerHTML == '=') {
+                    tune.play();
+                    string = eval(string);
+                    input.value = string;
+                }
+                else if(e.target.innerHTML == 'AC'){
+                    string = "";
+                    input.value = string;
+                    tune.play();
+                }else if(e.target.innerHTML == 'DEL'){
+                    string = string.substring(0, string.length - 1);
+                    input.value = string;
+                }
+                else{
+                    string += e.target.innerHTML;
+                    input.value = string;
+                }
+            })
+        })
+
+
+
+    </script>
+
+</body>
+</html>
